@@ -1,2 +1,28 @@
 # todo-practice
-Create React Todo App with useState, Context, Typescript
+
+## 개요
+
+[React • TodoMVC](http://todomvc.com/examples/react/#/)를 React를 사용해 만들었습니다. CSS 디자인, 그리고 앱의 기능을 재현하는 것이 목표입니다.
+
+## 사용 기술
+
+1. Language: HTML, CSS, JavaScript(ES6), TypeScript
+1. Tool: create-react-app, styled-components, react-icons
+
+## 설치
+
+프로젝트가 들어있는 폴더 안에서 명령 프롬프트를 열고, `npm install`으로 필요한 도구를 설치합니다. 그리고 `npm start`를 입력해 개발자 모드를 열어 동작을 확인할 수 있습니다.
+
+## 구성
+
+### todo-state
+
+React 의 상태를 관리해주는 `useState`를 사용했습니다. 부모 App 컴포넌트에서부터 각 하위 컴포넌트로 상태, 함수를 전달해 연결했습니다. 또한 `useCallback`, `useMemo`를 사용해 재사용을 줄이는 한편, `useEffect`로 항목을 추가할 때마다 CSS 디자인이 바뀌도록 설정했습니다.
+
+### todo-context
+
+Context 를 통해 TodoContext.js 파일에 상태를 관리하는 리듀서, 디스패치, 그리고 Context Hook 을 만들어 저장하고, 각 컴포넌트에 불러 기능을 구현했습니다.
+
+### todo-typescript
+
+기존의 자바스크립트로 작성했던 todo-context 프로젝트를 타입스크립트로 변환하는 작업을 수행했습니다. 함수, 객체, 배열 등 다양한 값들에 타입을 지정해 편의성을 높이고, 타입스크립트로 수정한 Context 파일을 각 컴포넌트에 연결했습니다.
