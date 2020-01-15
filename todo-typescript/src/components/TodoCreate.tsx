@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled, { css } from "styled-components";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { useTodoState, useTodoDispatch, useTodoNextId } from "../TodoContext";
+import { useTodoState, useTodoDispatch } from "../TodoContext";
 
 type StyledProps = { checked: Boolean; empty: Boolean };
 
@@ -64,7 +64,6 @@ function TodoCreate() {
     const [empty, setEmpty] = useState(false);
 
     const dispatch = useTodoDispatch();
-    const nextId = useTodoNextId();
 
     const checkAll = useCallback(() => {
         setChecked(!checked);
@@ -73,26 +72,31 @@ function TodoCreate() {
             done: !checked
         });
     }, [checked, setChecked, dispatch]);
+
     const onChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value),
         []
     );
+
+    // Source: https://www.codebrainer.com/blog/random-numbers-in-javascript-for-beginners
+    const getRandomUpTo = (max: number) =>
+        Math.floor(Math.random() * Math.floor(max)) + 1;
+
     const onSubmit = useCallback(
         (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             dispatch({
                 type: "CREATE",
                 todo: {
-                    id: nextId.current,
+                    id: getRandomUpTo(1000000),
                     contents: value,
                     done: false,
                     hide: false
                 }
             });
             setValue("");
-            nextId.current += 1;
         },
-        [dispatch, setValue, value, nextId]
+        [dispatch, value]
     );
 
     useEffect(() => {

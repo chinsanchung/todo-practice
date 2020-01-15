@@ -3,7 +3,7 @@ import React, {
     Dispatch,
     useReducer,
     useContext,
-    useRef
+    useEffect
 } from "react";
 
 type Todo = {
@@ -13,6 +13,7 @@ type Todo = {
     hide: boolean;
 };
 type Action =
+    | { type: "FIRSTRENDERING" }
     | { type: "CREATE"; todo: Todo }
     | { type: "TOGGLE"; id: number }
     | { type: "CHANGECONTENTS"; id: number; input: string }
@@ -26,7 +27,18 @@ const initialTodos: Todo[] = [];
 
 function reducer(state = initialTodos, action: Action) {
     switch (action.type) {
+        case "FIRSTRENDERING":
+            return state.concat(JSON.parse(localStorage.todos));
         case "CREATE":
+            const storage = JSON.parse(localStorage.todos);
+            if (storage !== null) {
+                localStorage.setItem(
+                    "todos",
+                    JSON.stringify(storage.concat(action.todo))
+                );
+            } else {
+                localStorage.setItem("todos", JSON.stringify([action.todo]));
+            }
             return state.concat(action.todo);
         case "TOGGLE":
             return state.map(todo =>
@@ -54,6 +66,13 @@ function reducer(state = initialTodos, action: Action) {
                 !todo.done ? { ...todo, hide: true } : { ...todo, hide: false }
             );
         case "REMOVE":
+            const prevStorage: Todo[] = JSON.parse(localStorage.todos);
+            const arrayIndex = prevStorage.findIndex(
+                element => element.id === action.id
+            );
+            prevStorage.splice(arrayIndex, 1);
+            console.log(prevStorage);
+            localStorage.setItem("todos", JSON.stringify(prevStorage));
             return state.filter(todo => todo.id !== action.id);
         default:
             throw new Error(`Error from Action.type ${action}`);
@@ -62,19 +81,25 @@ function reducer(state = initialTodos, action: Action) {
 
 const TodoStateContext = createContext<Todo[] | null>(null);
 const TodoDispatchContext = createContext<Dispatch<Action> | null>(null);
-const TodoNextIdContext = createContext<any | null>(null);
 
 type ProviderProps = { children: React.ReactNode };
 export function TodoProvider({ children }: ProviderProps) {
     const [state, dispatch] = useReducer(reducer, initialTodos);
-    const nextId = useRef(1);
+
+    useEffect(() => {
+        if (localStorage.todos) {
+            const storageArray = JSON.parse(localStorage.todos);
+            console.log("localStorage exists " + storageArray);
+            dispatch({ type: "FIRSTRENDERING" });
+        } else {
+            console.log("There is no localStorage.");
+        }
+    }, []);
 
     return (
         <TodoStateContext.Provider value={state}>
             <TodoDispatchContext.Provider value={dispatch}>
-                <TodoNextIdContext.Provider value={nextId}>
-                    {children}
-                </TodoNextIdContext.Provider>
+                {children}
             </TodoDispatchContext.Provider>
         </TodoStateContext.Provider>
     );
@@ -92,13 +117,6 @@ export function useTodoDispatch() {
     const context = useContext(TodoDispatchContext);
     if (!context) {
         throw new Error("Cannot find useTodoDispatch");
-    }
-    return context;
-}
-export function useTodoNextId() {
-    const context = useContext(TodoNextIdContext);
-    if (!context) {
-        throw new Error("Cannot find useTodoNextId");
     }
     return context;
 }
