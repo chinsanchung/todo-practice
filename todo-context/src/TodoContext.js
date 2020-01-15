@@ -1,10 +1,21 @@
-import React, { useReducer, createContext, useContext, useRef } from "react";
+import React, { useReducer, createContext, useContext, useEffect } from "react";
 
 const initialTodos = [];
 
 function reducer(state = initialTodos, action) {
     switch (action.type) {
+        case "FIRSTRENDERING":
+            return state.concat(JSON.parse(localStorage.getItem("todos")));
         case "CREATE":
+            const storage = JSON.parse(localStorage.getItem("todos"));
+            if (storage !== null) {
+                localStorage.setItem(
+                    "todos",
+                    JSON.stringify(storage.concat(action.todo))
+                );
+            } else {
+                localStorage.setItem("todos", JSON.stringify([action.todo]));
+            }
             return state.concat(action.todo);
         case "ALLTOGGLE":
             return state.map(todo => ({
@@ -32,6 +43,13 @@ function reducer(state = initialTodos, action) {
                 !todo.done ? { ...todo, hide: true } : { ...todo, hide: false }
             );
         case "REMOVE":
+            const prevStorage = JSON.parse(localStorage.getItem("todos"));
+            const arrayIndex = prevStorage.findIndex(
+                element => element.id === action.id
+            );
+            prevStorage.splice(arrayIndex, 1);
+            console.log(prevStorage);
+            localStorage.setItem("todos", JSON.stringify(prevStorage));
             return state.filter(todo => todo.id !== action.id);
         default:
             throw new Error(`Error from Action.type ${action.type}`);
@@ -40,17 +58,24 @@ function reducer(state = initialTodos, action) {
 
 const TodoStateContext = createContext();
 const TodoDispatchContext = createContext();
-const TodoNextIdContext = createContext();
 
 export function TodoProvider({ children }) {
     const [state, dispatch] = useReducer(reducer, initialTodos);
-    const nextId = useRef(1);
+
+    useEffect(() => {
+        if (localStorage.todos) {
+            const storageArray = JSON.parse(localStorage.todos);
+            console.log("localStorage exists " + storageArray);
+            dispatch({ type: "FIRSTRENDERING" });
+        } else {
+            console.log("There is no localStorage.");
+        }
+    }, []);
+
     return (
         <TodoStateContext.Provider value={state}>
             <TodoDispatchContext.Provider value={dispatch}>
-                <TodoNextIdContext.Provider value={nextId}>
-                    {children}
-                </TodoNextIdContext.Provider>
+                {children}
             </TodoDispatchContext.Provider>
         </TodoStateContext.Provider>
     );
@@ -68,14 +93,6 @@ export function useTodoDispatch() {
     const context = useContext(TodoDispatchContext);
     if (!context) {
         throw new Error("Cannot find useTodoDispatch");
-    }
-    return context;
-}
-
-export function useTodoNextId() {
-    const context = useContext(TodoNextIdContext);
-    if (!context) {
-        throw new Error("Cannot find useTodoNextId");
     }
     return context;
 }

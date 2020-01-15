@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useEffect } from "react";
 import styled, { css } from "styled-components";
-import { MdCheck, MdClose } from "react-icons/md";
+import { MdClose } from "react-icons/md";
+import { GiCircle } from "react-icons/gi";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { useTodoDispatch } from "../TodoContext";
 
 const ItemBlock = styled.div`
@@ -37,17 +39,14 @@ const TextBlock = styled.div`
 const CheckBlock = styled.div`
     width: 32px;
     height: 32px;
-    border: 1px solid #e5e5e5;
-    border-radius: 50%;
     margin-right: 31px;
-    font-size: 30px;
+    font-size: 38px;
     color: #e5e5e5;
     cursor: pointer;
     ${props =>
         props.done &&
         css`
             color: rgba(113, 234, 141, 0.91);
-            border-color: rgba(113, 234, 141, 0.91);
         `}
 `;
 const RemoveBlock = styled.div`
@@ -141,7 +140,7 @@ function TodoItem(props) {
                 ></ChangeInput>
             </form>
             <CheckBlock done={done} onClick={onToggle}>
-                <MdCheck />
+                {showInput ? <GiCircle /> : <IoIosCheckmarkCircleOutline />}
             </CheckBlock>
             <TextBlock done={done}>{contents}</TextBlock>
             <RemoveBlock hovered={hovered} onClick={onRemove}>

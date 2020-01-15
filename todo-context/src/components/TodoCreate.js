@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled, { css } from "styled-components";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { useTodoState, useTodoDispatch, useTodoNextId } from "../TodoContext";
+import { useTodoState, useTodoDispatch } from "../TodoContext";
 
 const SectionCreateBlock = styled.div`
     display: flex;
@@ -62,8 +62,6 @@ function TodoCreate() {
     const [empty, setEmpty] = useState(false);
 
     const dispatch = useTodoDispatch();
-    const nextId = useTodoNextId();
-
     const checkAll = useCallback(() => {
         setChecked(!checked);
         dispatch({
@@ -72,22 +70,26 @@ function TodoCreate() {
         });
     }, [checked, setChecked, dispatch]);
     const onChange = useCallback(e => setValue(e.target.value), []);
+
+    // Source: https://www.codebrainer.com/blog/random-numbers-in-javascript-for-beginners
+    const getRandomUpTo = max =>
+        Math.floor(Math.random() * Math.floor(max)) + 1;
+
     const onSubmit = useCallback(
         e => {
             e.preventDefault();
             dispatch({
                 type: "CREATE",
                 todo: {
-                    id: nextId.current,
+                    id: getRandomUpTo(1000000),
                     contents: value,
                     done: false,
                     hide: false
                 }
             });
             setValue("");
-            nextId.current += 1;
         },
-        [dispatch, setValue, nextId, value]
+        [dispatch, value]
     );
 
     useEffect(() => {
@@ -100,7 +102,7 @@ function TodoCreate() {
             setEmpty(false);
             setChecked(true);
         }
-    }, [todos, setEmpty]);
+    }, [todos]);
 
     return (
         <SectionCreateBlock>
