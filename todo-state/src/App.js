@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import "./reset.css";
 import "./css/filter-btn.css";
@@ -31,24 +31,39 @@ const FooterText = styled.footer`
 `;
 
 function App() {
-    const nextId = useRef(1);
     const [empty, setEmpty] = useState(true);
     const [todos, setTodo] = useState([]);
 
+    // Source: https://www.codebrainer.com/blog/random-numbers-in-javascript-for-beginners
+    const getRandomUpTo = max =>
+        Math.floor(Math.random() * Math.floor(max)) + 1;
+
     const onCreate = useCallback(value => {
-        setTodo(todos =>
-            todos.concat({
-                id: nextId.current,
-                contents: value,
-                done: false,
-                hide: false
-            })
-        );
+        const todo = {
+            id: getRandomUpTo(1000000),
+            contents: value,
+            done: false,
+            hide: false
+        };
+        setTodo(todos => todos.concat(todo));
         setEmpty(false);
-        nextId.current += 1;
+
+        // setItem to localStorage
+        const storage = JSON.parse(localStorage.getItem("todos"));
+        if (storage !== null) {
+            localStorage.setItem("todos", JSON.stringify(storage.concat(todo)));
+        } else {
+            localStorage.setItem("todos", JSON.stringify([todo]));
+        }
     }, []);
     const onRemove = useCallback(id => {
         setTodo(todos => todos.filter(todo => todo.id !== id));
+        const prevStorage = JSON.parse(localStorage.getItem("todos"));
+        // Remove localStorage's item
+        const arrayIndex = prevStorage.findIndex(element => element.id === id);
+        prevStorage.splice(arrayIndex, 1);
+        console.log(prevStorage);
+        localStorage.setItem("todos", JSON.stringify(prevStorage));
     }, []);
     const onToggle = useCallback(id => {
         setTodo(todos =>
@@ -96,6 +111,16 @@ function App() {
     }, []);
     const onClearCompleted = useCallback(() => {
         setTodo(todos => todos.filter(todo => todo.done === false));
+    }, []);
+
+    useEffect(() => {
+        if (localStorage.todos) {
+            const storageArray = JSON.parse(localStorage.todos);
+            console.log("localStorage exists " + storageArray);
+            setTodo(todos => todos.concat(storageArray));
+        } else {
+            console.log("There is no localStorage.");
+        }
     }, []);
 
     return (

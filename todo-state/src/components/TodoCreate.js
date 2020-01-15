@@ -70,7 +70,7 @@ function TodoCreate(props) {
             onCreate(value);
             setValue("");
         },
-        [value, onCreate, setValue]
+        [value, onCreate]
     );
     useEffect(() => {
         const completedLength = todos.filter(todo => todo.done).length;
