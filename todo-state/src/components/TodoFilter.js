@@ -83,7 +83,7 @@ function TodoFilter(props) {
         },
         [btnStyling, onFilter]
     );
-    // changeFilter({ action: "all", event: e })
+
     return (
         <SectionFilterBlock>
             <FilterLeftText>{`${count} item left`}</FilterLeftText>
