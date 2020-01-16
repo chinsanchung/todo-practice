@@ -100,8 +100,6 @@ function TodoItem(props) {
         onChangeContents
     } = props;
 
-    // const onToggle = () => dispatch({ type: "TOGGLE", id });
-    // const onRemove = () => dispatch({ type: "REMOVE", id });
     const [showInput, setShowInput] = useState(false);
     const [hovered, setHovered] = useState(false);
     const [value, setValue] = useState("");
