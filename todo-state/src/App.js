@@ -78,6 +78,7 @@ function App() {
                 todo.id === id ? { ...todo, contents: input } : todo
             )
         );
+        localStorage.setItem("todos", JSON.stringify(todos));
     }, []);
     const onAllToggle = useCallback(value => {
         setTodo(todos => todos.map(todo => ({ ...todo, done: value })));

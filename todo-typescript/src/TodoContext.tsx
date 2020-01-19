@@ -16,7 +16,7 @@ type Action =
     | { type: "FIRSTRENDERING" }
     | { type: "CREATE"; todo: Todo }
     | { type: "TOGGLE"; id: number }
-    | { type: "CHANGECONTENTS"; id: number; input: string }
+    | { type: "LOADTODOS"; id: number; input: string }
     | { type: "ALLTOGGLE"; done: boolean }
     | { type: "FILTERALL" }
     | { type: "FILTERACTIVE" }
@@ -44,12 +44,14 @@ function reducer(state = initialTodos, action: Action) {
             return state.map(todo =>
                 todo.id === action.id ? { ...todo, done: !todo.done } : todo
             );
-        case "CHANGECONTENTS":
-            return state.map(todo =>
+        case "LOADTODOS":
+            const nextArray = state.map(todo =>
                 todo.id === action.id
                     ? { ...todo, contents: action.input }
                     : todo
             );
+            localStorage.setItem("todos", JSON.stringify(nextArray));
+            return nextArray;
         case "ALLTOGGLE":
             return state.map(todo => ({
                 ...todo,

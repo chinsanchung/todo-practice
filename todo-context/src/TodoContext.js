@@ -4,7 +4,7 @@ const initialTodos = [];
 
 function reducer(state = initialTodos, action) {
     switch (action.type) {
-        case "FIRSTRENDERING":
+        case "LOADTODOS":
             return state.concat(JSON.parse(localStorage.getItem("todos")));
         case "CREATE":
             const storage = JSON.parse(localStorage.getItem("todos"));
@@ -27,6 +27,12 @@ function reducer(state = initialTodos, action) {
                 todo.id === action.id ? { ...todo, done: !todo.done } : todo
             );
         case "CHANGECONTENTS":
+            const nextArray = state.map(todo =>
+                todo.id === action.id
+                    ? { ...todo, contents: action.input }
+                    : todo
+            );
+            localStorage.setItem("todos", JSON.stringify(nextArray));
             return state.map(todo =>
                 todo.id === action.id
                     ? { ...todo, contents: action.input }
@@ -66,7 +72,7 @@ export function TodoProvider({ children }) {
         if (localStorage.todos) {
             const storageArray = JSON.parse(localStorage.todos);
             console.log("localStorage exists " + storageArray);
-            dispatch({ type: "FIRSTRENDERING" });
+            dispatch({ type: "LOADTODOS" });
         } else {
             console.log("There is no localStorage.");
         }

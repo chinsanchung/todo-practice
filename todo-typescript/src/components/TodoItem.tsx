@@ -111,7 +111,7 @@ function TodoItem({ id, contents, done, hide }: TodoProps) {
     const onSubmit = useCallback(
         e => {
             e.preventDefault();
-            dispatch({ type: "CHANGECONTENTS", id, input: value });
+            dispatch({ type: "LOADTODOS", id, input: value });
             setValue("");
             setShowInput(showInput => !showInput);
             setHovered(hovered => !hovered);
