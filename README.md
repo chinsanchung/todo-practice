@@ -7,7 +7,7 @@
 ## 사용 기술
 
 1. Language: HTML, CSS, JavaScript(ES6), TypeScript
-1. Tool: create-react-app, styled-components, react-icons
+1. Tool: create-react-app, styled-components, react-icons, vue-cli, vue-styled-components, vuex, fontawesome
 
 ## 설치
 
@@ -31,6 +31,10 @@ Context 를 통해 TodoContext.js 파일에 상태를 관리하는 리듀서, �
 
 module, container, components 폴더로 구분, 컴포넌트를 세분화하고 `redux`, `react-redux`를 사용해 상태와 기능을 작성, 연결했습니다.
 
+### todo-vue
+
+Vue CLI 로 프로젝트를 생성하고, Vuex 로 상태와 액션을 컴포넌트와 연결했습니다. 그리고 vue-styled-components 로 스타일을 선언했고, fontawesome 으로 아이콘을 불러왔습니다.
+
 ## 업데이트
 
 1. 01/15
@@ -44,3 +48,7 @@ module, container, components 폴더로 구분, 컴포넌트를 세분화하고 
 1. 01/16
 
 -   todo-redux 프로젝트를 작성했습니다.
+
+1. 01/19
+
+-   todo-vue 프로젝트를 작성했습니다.
