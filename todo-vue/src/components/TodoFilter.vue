@@ -36,15 +36,15 @@ import {
 
 export default {
     name: "TodoFilter",
-    props: {
-        todos: Array
-    },
     components: {
         SectionFilterBlock,
         BtnListBlock,
         FilterLeftText,
         FilterButton,
         FilterRightText
+    },
+    props: {
+        todos: Array
     },
     computed: {
         todoCount() {
