@@ -6,7 +6,7 @@
       </form>
       <CheckBlock :done="isDone" @click="onToggle">
         <font-awesome-icon :icon="['fas', 'check-circle']" v-if="!showInput" />
-        <!-- <font-awesome-icon :icon="['fas', 'circle']" v-else /> -->
+        <font-awesome-icon :icon="['fas', 'circle']" v-else />
       </CheckBlock>
       <TextBlock :done="isDone">{{ contents }}</TextBlock>
       <RemoveBlock :hovered="isHovered" :done="isDone" @click="onRemove">
