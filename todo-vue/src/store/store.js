@@ -2,12 +2,6 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 Vue.use(Vuex);
-/*    {
-        id: 1,
-        contents: "test",
-        done: true,
-        hide: false
-    }*/
 
 export const store = new Vuex.Store({
     state: {
@@ -38,8 +32,6 @@ export const store = new Vuex.Store({
             const nextArray = state.todos.map(todo =>
                 todo.id === id ? { ...todo, contents: contents } : todo
             );
-            console.log(nextArray);
-            localStorage.setItem("todos", JSON.stringify(nextArray));
             state.todos = nextArray;
         },
         checkFilterAll(state) {
@@ -89,6 +81,12 @@ export const store = new Vuex.Store({
             context.commit("toggleTodo", id);
         },
         changeContents(context, id, contents) {
+            const nextArray = context.state.todos.map(todo =>
+                todo.id === id ? { ...todo, contents: contents } : todo
+            );
+            console.log(nextArray);
+            localStorage.setItem("todos", JSON.stringify(nextArray));
+
             context.commit("changeContents", id, contents);
         },
         checkFilterAll(context) {
