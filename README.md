@@ -7,7 +7,7 @@
 ## 사용 기술
 
 1. Language: HTML, CSS, JavaScript(ES6), TypeScript
-1. Tool: create-react-app, styled-components, react-icons, vue-cli, vue-styled-components, vuex, fontawesome
+1. Tool: create-react-app, styled-components, react-icons, redux, vue-cli, vue-styled-components, vuex, fontawesome
 
 ## 설치
 
