@@ -38,18 +38,17 @@ Vue CLI 로 프로젝트를 생성하고, Vuex 로 상태와 액션을 컴포넌
 ## 업데이트
 
 1. 01/15
-
 -   localStorage 를 적용했습니다. 새로운 항목을 만들 때마다 localStorage 에 저장하며, localhost:3000 으로 프로그램을 실행하면 저장소에 있는 문자열을 `JSON.parse`로 변환한 후 화면에 출력하도록 만들었습니다.
-
 -   Todoitem 의 항목들의 key 를 임의의 숫자를 만드는 방식으로 변경했습니다. 필요한 함수 `getRandomUpTo`는 [링크](https://www.codebrainer.com/blog/random-numbers-in-javascript-for-beginners)의 글을 참조했습니다.
-
 -   TodoItem 의 아이콘 `MdCheck`를 `GiCircle`, `IoIosCheckmarkCircleOutline`으로 변경했습니다. 이제 더블클릭으로 항목을 변경할 때 `IoIosCheckmarkCircleOutline` 아이콘으로 바뀝니다.
-
-1. 01/16
-
+2. 01/16
 -   todo-redux 프로젝트를 작성했습니다.
-
-1. 01/19
-
+3. 01/19
 -   todo-vue 프로젝트를 작성했습니다.
 -   todo 항목의 콘텐츠를 바꾸는 이벤트에 localStorage 를 수정하는 기능을 추가했습니다.
+4. 03/31
+-   todo-reactNative 프로젝트를 작성했습니다.
+
+## 시연 이미지
+
+<img src="https://github.com/chinsanchung/todo-practice/blob/master/todo02.png" width=700 />
